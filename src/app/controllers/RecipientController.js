@@ -36,5 +36,13 @@ class RecipientController {
     if (!(await schema.isValid(req.body))) {
       return res.status(400).json({ error: 'Validation fails' });
     }
+
+    const recipient = await Recipient.findByPk(req.params.id);
+
+    await recipient.update(req.body);
+
+    return res.json(recipient);
   }
 }
+
+export default new RecipientController();
