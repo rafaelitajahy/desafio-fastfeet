@@ -7,7 +7,7 @@ class DeliverymanController {
   async index(req, res) {
     const { page = 1 } = req.query;
 
-    const courier = await Courier.findAll({
+    const deliveryman = await Deliveryman.findAll({
       order: ['name'],
       limit: 20,
       offset: (page - 1) * 20,
@@ -17,7 +17,7 @@ class DeliverymanController {
       ],
     });
 
-    res.json(courier);
+    res.json(deliveryman);
   }
 
   async store(req, res) {
