@@ -6,7 +6,7 @@ import UserController from './app/controllers/UserController';
 import SessionController from './app/controllers/SessionController';
 import FileController from './app/controllers/FileController';
 import RecipientController from './app/controllers/RecipientController';
-import CourierController from './app/controllers/CourierController';
+import CourierController from './app/controllers/DeliverymanController';
 
 import authMiddlewar from './app/middlewares/auth';
 
