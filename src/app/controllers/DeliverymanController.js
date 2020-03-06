@@ -1,6 +1,6 @@
 import * as Yup from 'yup';
 
-import Deliveryman from '../models/deliveryman';
+import Deliveryman from '../models/Deliveryman';
 import File from '../models/File';
 
 class DeliverymanController {
@@ -38,6 +38,35 @@ class DeliverymanController {
     });
 
     return res.json(deliveryman);
+  }
+
+  async update(req, res) {
+    const schema = Yup.object().shape({
+      name: Yup.string().required(),
+      email: Yup.string().required(),
+    });
+
+    if (!(await schema.isValid(req.body))) {
+      return res.status(400).json({ error: 'validation fails' });
+    }
+
+    const deliveryman = await Deliveryman.findByPk(req.params.id);
+
+    if (!deliveryman) {
+      return res.status(404).json({ error: 'Deliveryman not found!' });
+    }
+
+    const newdeliveryman = await deliveryman.update(req.body);
+
+    return res.json(newdeliveryman);
+  }
+
+  async delete(req, res) {
+    const deliveryman = await Deliveryman.findByPk(req.params.id);
+
+    await deliveryman.delete();
+
+    return res.json({ message: 'Deliveryman I will be excluded', deliveryman });
   }
 }
 
