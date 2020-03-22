@@ -28,6 +28,6 @@ routes.put('/recipients/:id', RecipientController.update);
 routes.get('/deliverymen', DeliverymanController.store);
 routes.get('/deliverymen', DeliverymanController.index);
 routes.get('/deliverymen/:id', DeliverymanController.update);
-routes.get('/deliverymen/:id', DeliverymanController.delete);
+routes.get('/deliverymen/:id', DeliverymanController.destroy);
 
 export default routes;
