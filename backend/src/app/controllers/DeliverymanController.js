@@ -26,6 +26,14 @@ class DeliverymanController {
       return res.status(400).json({ error: 'Delivery man already exists' });
     }
 
+    if (avatar_id) {
+      const avatarExists = await File.findByPk(avatar_id);
+
+      if (!avatarExists) {
+        return res.status(400).json({ error: 'File does not exists' });
+      }
+    }
+
     const deliveryman = await Deliveryman.create({
       name,
       email,
@@ -124,7 +132,7 @@ class DeliverymanController {
     return res.json({ id, name, email, avatar });
   }
 
-  async destroy(req, res) {
+  async delete(req, res) {
     const { id } = req.params;
 
     const deliveryman = await Deliveryman.findByPk(id);
@@ -144,6 +152,13 @@ class DeliverymanController {
     }
 
     await deliveryman.destroy();
+
+    //Verifica se existe avatar para deletar também
+    const avatar = await File.findByPk(deliveryman.avatar_id);
+
+    if (avatar) {
+      await avatar.destroy();
+    }
 
     return res.json({ message: 'Deliveryman I will be excluded', deliveryman });
   }

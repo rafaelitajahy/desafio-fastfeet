@@ -102,18 +102,56 @@ class DeliveryController {
 
     const { product, recipient_id, deliveryman_id } = req.body;
 
-    if (recipient_id) {
-      const recipientExixts = await Recipient.findByPk(recipient_id);
 
-      if (!recipientExixts) {
+    const recipientExixts = await Recipient.findByPk(recipient_id);
+
+    if (!recipientExixts) {
         return res.status(400).json({ error: 'Recipient does not exists' });
-      }
     }
 
-    await delivery.update({ product, recipient_id, deliveryman_id });
+    const deliverymanExixts = await Deliveryman.findByPk(deliveryman_id);
 
-    return res.json({});
+    if (!deliverymanExixts) {
+        return res.status(400).json({ error: 'Deliveryman does not exists' });
+    }
+
+    await delivery.update({product, recipient_id, deliveryman_id });
+
+    const { recipient, deliveryman } = await Delivery.findByPk(id, {
+      include: [
+        {
+          model: Recipient,
+          as: 'recipient',
+          attributes: ['id', 'name'],
+        },
+        {
+          model: Deliveryman,
+          as: 'deliveryman',
+          attributes: ['id', 'name'],
+        },
+      ],
+    });
+
+    return res.json({id, product, recipient, deliveryman});
+  }
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    const delivery = await Delivery.findByPk(id);
+
+    if (!delivery) {
+      return res.status(400).json({ error: 'Delivery does not exists' });
+    }
+
+    delivery.canceled_at = new Date();
+
+    await delivery.save();
+
+    return res.json(delivery);
   }
 }
 
-export default DeliveryController();
+
+
+export default new DeliveryController();
