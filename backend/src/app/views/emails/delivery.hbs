@@ -1,10 +1,16 @@
-<strong>Olá, {{ provider }}</strong>
-<p>Houve um cancelamento de horário, confira os detalhes abaixo:</p>
+<strong>Olá, {{ deliveryman }}</strong>
+<p>Você tem uma nova encomenda</p>
 <p>
-  <strong>Cliente: </strong> {{ user }} <br />
-  <strong>Data/hora: </strong> {{ date }} <br />
-  <br />
-  <small>
-    O horário está novamente disponível para novos agendamentos.
-  </small>
+  O produto já está disponível para retirada.<br />
+  <strong>Produto:</strong> {{product}}
+</p>
+<p>
+  <h3>DESTINATÁRIO: </h3>
+  <strong>Name: </strong> {{ recipient_name }} <br />
+  <strong>Street: </strong> {{ recipient_street }} <br />
+  <strong>Number: </strong> {{ recipient_number }} <br />
+  <strong>Complement: </strong> {{ recipient_complement }} <br />
+  <strong>State: </strong> {{ recipient_state }} <br />
+  <strong>City: </strong> {{ recipient_city }} <br />
+  <strong>Zip_code: </strong> {{ recipient_zip_code }} <br />
 </p>

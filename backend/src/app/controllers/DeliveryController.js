@@ -4,6 +4,8 @@ import Delivery from '../models/Delivery';
 import Deliveryman from '../models/Deliveryman';
 import Recipient from '../models/Recipient';
 
+import Mail from '../../lib/Mail';
+
 class DeliveryController {
   async store(req, res) {
     const schema = Yup.object().shape({
@@ -34,6 +36,23 @@ class DeliveryController {
       recipient_id,
       deliveryman_id,
       product,
+    });
+
+    await Mail.sendMail({
+      to: `${deliveryman.name} <${deliveryman.email}>`,
+      subject: 'Você tem uma nova entrega',
+      template: 'delivery',
+      context: {
+        deliveryman: deliveryman.name,
+        product,
+        recipient_name: recipientExists.name,
+        recipient_street: recipientExists.street,
+        recipient_number: recipientExists.number,
+        recipient_complement: recipientExists.complement,
+        recipient_state: recipientExists.state,
+        recipient_city: recipientExists.city,
+        recipient_zip_code: recipientExists.zip_code,
+      },
     });
 
     return res.json(delivery);
@@ -102,20 +121,19 @@ class DeliveryController {
 
     const { product, recipient_id, deliveryman_id } = req.body;
 
-
     const recipientExixts = await Recipient.findByPk(recipient_id);
 
     if (!recipientExixts) {
-        return res.status(400).json({ error: 'Recipient does not exists' });
+      return res.status(400).json({ error: 'Recipient does not exists' });
     }
 
     const deliverymanExixts = await Deliveryman.findByPk(deliveryman_id);
 
     if (!deliverymanExixts) {
-        return res.status(400).json({ error: 'Deliveryman does not exists' });
+      return res.status(400).json({ error: 'Deliveryman does not exists' });
     }
 
-    await delivery.update({product, recipient_id, deliveryman_id });
+    await delivery.update({ product, recipient_id, deliveryman_id });
 
     const { recipient, deliveryman } = await Delivery.findByPk(id, {
       include: [
@@ -132,7 +150,7 @@ class DeliveryController {
       ],
     });
 
-    return res.json({id, product, recipient, deliveryman});
+    return res.json({ id, product, recipient, deliveryman });
   }
 
   async delete(req, res) {
@@ -151,7 +169,5 @@ class DeliveryController {
     return res.json(delivery);
   }
 }
-
-
 
 export default new DeliveryController();
