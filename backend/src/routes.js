@@ -8,6 +8,7 @@ import FileController from './app/controllers/FileController';
 import RecipientController from './app/controllers/RecipientController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import DeliveryController from './app/controllers/DeliveryController';
+import ControlDeliveryController from './app/controllers/ControlDeliveryController';
 
 import authMiddlewar from './app/middlewares/auth';
 
@@ -37,5 +38,8 @@ routes.get('/deliveries/:id', DeliveryController.show);
 routes.get('/deliveries', DeliveryController.index);
 routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.delete);
+
+routes.put('/delivery/:id/finish', ControlDeliveryController.finishDelivery);
+routes.put('/delivery/:id/withdrawdelivery', ControlDeliveryController.withdrawDelivery);
 
 export default routes;
