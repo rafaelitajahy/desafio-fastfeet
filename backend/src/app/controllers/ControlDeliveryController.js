@@ -4,9 +4,8 @@ import { parseISO, isAfter, isBefore, setHours } from 'date-fns';
 import Deliveryman from '../models/Deliveryman';
 import Delivery from '../models/Delivery';
 
-
 class ControlDeliveryController {
-  async finishDelivery (req, res){
+  async finishDelivery(req, res) {
     const { id } = req.params;
 
     const delivery = await Delivery.findByPk(id);
@@ -19,10 +18,10 @@ class ControlDeliveryController {
 
     await delivery.save();
 
-    return res.json({msg: 'Successful Delivery', id});
+    return res.json({ msg: 'Successful Delivery', id });
   }
 
-  async withdrawDelivery (req, res){
+  async withdrawDelivery(req, res) {
     const { id } = req.params;
 
     const delivery = await Delivery.findByPk(id);
@@ -32,9 +31,10 @@ class ControlDeliveryController {
     }
 
     const startDate = new Date();
-    if (isBefore(startDate, setHours(new Date(), 8)) ||
-        isAfter(startDate, setHours(new Date(), 18))
-    ){
+    if (
+      isBefore(startDate, setHours(new Date(), 8)) ||
+      isAfter(startDate, setHours(new Date(), 18))
+    ) {
       return res.status(400).json({ error: 'Invalid time' });
     }
 
@@ -42,7 +42,7 @@ class ControlDeliveryController {
 
     await delivery.save();
 
-    return res.json({msg: 'Successful Delivery', id});
+    return res.json({ msg: 'Successful Delivery', id });
   }
 }
 

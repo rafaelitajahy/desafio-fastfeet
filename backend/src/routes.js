@@ -9,6 +9,7 @@ import RecipientController from './app/controllers/RecipientController';
 import DeliverymanController from './app/controllers/DeliverymanController';
 import DeliveryController from './app/controllers/DeliveryController';
 import ControlDeliveryController from './app/controllers/ControlDeliveryController';
+import DeliveriesDeliverymanController from './app/controllers/DeliveriesDeliverymanController';
 
 import authMiddlewar from './app/middlewares/auth';
 
@@ -17,6 +18,15 @@ const upload = multer(multerConfig);
 
 routes.post('/users', UserController.store);
 routes.post('/sessions', SessionController.store);
+
+routes.get(
+  '/deliveryman/:id/deliveries',
+  DeliveriesDeliverymanController.deliveries
+);
+routes.get(
+  '/deliveryman/:id/delivered',
+  DeliveriesDeliverymanController.delivered
+);
 
 routes.use(authMiddlewar);
 
@@ -40,6 +50,9 @@ routes.put('/deliveries/:id', DeliveryController.update);
 routes.delete('/deliveries/:id', DeliveryController.delete);
 
 routes.put('/delivery/:id/finish', ControlDeliveryController.finishDelivery);
-routes.put('/delivery/:id/withdrawdelivery', ControlDeliveryController.withdrawDelivery);
+routes.put(
+  '/delivery/:id/withdrawdelivery',
+  ControlDeliveryController.withdrawDelivery
+);
 
 export default routes;

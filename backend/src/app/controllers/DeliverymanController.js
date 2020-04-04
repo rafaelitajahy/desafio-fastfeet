@@ -153,7 +153,7 @@ class DeliverymanController {
 
     await deliveryman.destroy();
 
-    //Verifica se existe avatar para deletar também
+    // Verifica se existe avatar para deletar também
     const avatar = await File.findByPk(deliveryman.avatar_id);
 
     if (avatar) {
